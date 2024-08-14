@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.edtf4k</groupId>
+    <artifactId>edtf4k</artifactId>
+    <version>1.0.0</version>
+    <description>Extended Date/Time Format library in Kotlin</description>
+    <url>https://github.com/ppuffinburger/edtf4k</url>
+
+    <licenses>
+        <license>
+            <name>GNU Lesser General Public License, Version 2.1</name>
+            <url>https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html</url>
+            <comments>Licensed under the GNU LGPL 2.1 or later (at your option)</comments>
+        </license>
+    </licenses>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/ppuffinburger/edtf4k/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/ppuffinburger/edtf4k</url>
+        <connection>scm:git:git://github.com/ppuffinburger/edtf4k.git</connection>
+        <developerConnection>scm:git:git@github.com:ppuffinburger/edtf4k.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>Philip Puffinburger</name>
+            <email>pkp.github@gmail.com</email>
+            <url>https://github.com/ppuffinburger</url>
+            <id>ppuffinburger</id>
+            <roles>
+                <role>Project Creator</role>
+                <role>Developer</role>
+            </roles>
+            <timezone>America/Los_Angeles</timezone>
+        </developer>
+    </developers>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <kotlin.version>2.0.0</kotlin.version>
+        <kotlin.code.style>official</kotlin.code.style>
+        <kotlin.compiler.jvmTarget>1.8</kotlin.compiler.jvmTarget>
+        <junit-jupiter.version>5.10.3</junit-jupiter.version>
+        <assertj.version>3.26.3</assertj.version>
+        <xmlunit.version>2.10.0</xmlunit.version>
+        <maven-surefire-plugin.version>3.3.1</maven-surefire-plugin.version>
+        <maven-enforcer-plugin.version>3.5.0</maven-enforcer-plugin.version>
+        <versions-maven-plugin.version>2.17.1</versions-maven-plugin.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>mavenCentral</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <sourceDirectory>src/main/kotlin</sourceDirectory>
+        <testSourceDirectory>src/test/kotlin</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-maven-plugin</artifactId>
+                <version>2.0.0</version>
+                <executions>
+                    <execution>
+                        <id>compile</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>test-compile</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>test-compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>${versions-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>${maven-enforcer-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>enforce-maven-3</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>3.1.0</version>
+                                </requireMavenVersion>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+
+        <!-- Test Scope -->
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test-junit5</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
