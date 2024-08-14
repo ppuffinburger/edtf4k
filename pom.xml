@@ -6,7 +6,7 @@
 
     <groupId>org.edtf4k</groupId>
     <artifactId>edtf4k</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>Extended Date/Time Format library in Kotlin</description>
     <url>https://github.com/ppuffinburger/edtf4k</url>
 

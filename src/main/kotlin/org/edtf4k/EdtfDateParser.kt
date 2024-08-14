@@ -157,7 +157,7 @@ internal class EdtfDateParser {
             if (!tzSignString.isNullOrBlank()) {
                 val tzSign = if ((tzSignString[0] == '-')) -1 else 1
                 val tzHour = matcher.group("tzhour").toInt()
-                val tzMinute = matcher.group("tzminute").toInt()
+                val tzMinute = matcher.group("tzminute")?.toInt() ?: 0
                 timezoneOffset = tzSign * (tzHour * 60) + tzMinute
             }
         }
@@ -201,7 +201,7 @@ internal class EdtfDateParser {
 			y?(?<year>(?<yearopenflags>[~?%]{0,2})(?<yearnum>[+-]?(?:\d+E\d+|[0-9X]+))(?>S(?<yearprecision>\d+))?(?<yearcloseflags>[~?%]{0,2}))
 			(?>-(?<month>(?<monthopenflags>[~?%]{0,2})(?<monthnum>(?>[0-9X]{1,2}))(?<monthcloseflags>[~?%]{0,2}))
 			(?>-(?<day>(?<dayopenflags>[~?%]{0,2})(?<daynum>(?>[0-9X]{1,2}))(?<daycloseflags>[~?%]{0,2}))
-			(?>T(?<hour>[0-9]{2}):?(?<minute>[0-9]{2}):?(?<second>[0-9]{2})(?>(?<tzutc>Z)|(?<tzsign>[+-])(?<tzhour>[01][0-9]):(?<tzminute>[0-5][0-9]))?)?)?)?${'$'}
+			(?>T(?<hour>[0-9]{2}):?(?<minute>[0-9]{2}):?(?<second>[0-9]{2})(?>(?<tzutc>Z)|(?<tzsign>[+-])(?<tzhour>[01][0-9])?(:(?<tzminute>[0-5][0-9]))?)?)?)?)?${'$'}
 			""".trimIndent()
         private val PATTERN: Pattern = Pattern.compile(PATTERN_STRING)
 

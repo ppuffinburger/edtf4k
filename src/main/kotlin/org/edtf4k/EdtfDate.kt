@@ -1,5 +1,7 @@
 package org.edtf4k
 
+import kotlin.math.abs
+
 class EdtfDate(val status: EdtfDateStatus, val year: EdtfDateComponent = EdtfDateComponent(), val month: EdtfDateComponent = EdtfDateComponent(), val day: EdtfDateComponent = EdtfDateComponent(), val hour: Int = 0, val minute: Int = 0, val second: Int = 0, val timezoneOffset: Int? = null) {
     fun hasTimezoneOffset(): Boolean = timezoneOffset != null
 
@@ -73,7 +75,7 @@ class EdtfDate(val status: EdtfDateStatus, val year: EdtfDateComponent = EdtfDat
                             val tzHour = timezoneOffset / 60
                             val tzMinute = timezoneOffset % 60
                             work.append((if (timezoneOffset < 0) '-' else '+'))
-                                .append(String.format("%02d", tzHour))
+                                .append(String.format("%02d", abs(tzHour)))
                                 .append(':')
                                 .append(String.format("%02d", tzMinute))
                         }

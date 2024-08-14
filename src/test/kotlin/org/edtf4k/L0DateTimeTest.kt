@@ -55,7 +55,8 @@ class L0DateTimeTest : WithAssertions {
             return Stream.of(
                 Arguments.of("2001-02-03T09:30:01", EdtfDateStatus.NORMAL, 2001, 2, 3, 9, 30, 1, null, "2001-02-03T09:30:01"),
                 Arguments.of("2004-01-01T10:10:10Z", EdtfDateStatus.NORMAL, 2004, 1, 1, 10, 10, 10, 0, "2004-01-01T10:10:10Z"),
-                Arguments.of("2004-01-01T10:10:10+05:00", EdtfDateStatus.NORMAL, 2004, 1, 1, 10, 10, 10, 300, "2004-01-01T10:10:10+05:00")
+                Arguments.of("2004-01-01T10:10:10+05:00", EdtfDateStatus.NORMAL, 2004, 1, 1, 10, 10, 10, 300, "2004-01-01T10:10:10+05:00"),
+                Arguments.of("1985-04-12T23:20:30-04", EdtfDateStatus.NORMAL, 1985, 4, 12, 23, 20, 30, -240, "1985-04-12T23:20:30-04:00")
             )
         }
     }
