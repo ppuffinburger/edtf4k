@@ -2,7 +2,6 @@ package org.edtf4k
 
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 class EdtfDateComponent(input: String = "") {
     val unspecifiedMask: BitSet
@@ -46,7 +45,7 @@ class EdtfDateComponent(input: String = "") {
                     }
 
                     value = if (contains(EXPONENT)) {
-                        toString().toDouble().roundToInt()
+                        toString().toDouble().toInt()
                     } else {
                         toString().toInt()
                     }

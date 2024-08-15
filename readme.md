@@ -6,9 +6,9 @@ EDTF4K is a Kotlin library for parsing [EDTF](https://www.loc.gov/standards/date
 
 ## Basic Usage
 
-`org.edtf.EdtfDateFactory` is the entry-point to parsing an EDTF string.  The return will either be an `org.edtf4k.EdtfDatePair` or an `org.edtf4k.EdtDateSet` depending on the string.
+`org.edtf4k.EdtfDateFactory` is the entry-point to parsing an EDTF string.  The return will either be an `org.edtf4k.EdtfDatePair` or an `org.edtf4k.EdtDateSet` depending on the string.
 
-`org.edtf.EdtfDatePair` holds a pair of `org.edtf.EdtfDate`, because dates can be intervals or ranges.  Each `org.edtf4k.EdtfDate` has a status to determine if it is NORMAL, OPEN, UNUSED, UNKNOWN, or INVALID. 
+`org.edtf4k.EdtfDatePair` holds a pair of `org.edtf4k.EdtfDate`, because dates can be intervals or ranges.  Each `org.edtf4k.EdtfDate` has a status to determine if it is NORMAL, OPEN, UNUSED, UNKNOWN, or INVALID. 
 
 
 ```Kotlin
