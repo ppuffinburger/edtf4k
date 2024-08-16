@@ -2,7 +2,16 @@ package org.edtf4k
 
 import kotlin.math.abs
 
-class EdtfDate(val status: EdtfDateStatus, val year: EdtfDateComponent = EdtfDateComponent(), val month: EdtfDateComponent = EdtfDateComponent(), val day: EdtfDateComponent = EdtfDateComponent(), val hour: Int = 0, val minute: Int = 0, val second: Int = 0, val timezoneOffset: Int? = null) {
+class EdtfDate(
+    val status: EdtfDateStatus,
+    val year: EdtfDateComponent = EdtfDateComponent(),
+    val month: EdtfDateComponent = EdtfDateComponent(),
+    val day: EdtfDateComponent = EdtfDateComponent(),
+    val hour: Int = 0,
+    val minute: Int = 0,
+    val second: Int = 0,
+    val timezoneOffset: Int? = null
+) : EdtfDateType {
     fun hasTimezoneOffset(): Boolean = timezoneOffset != null
 
     fun getSubYearGrouping(): EdtfSubYearGrouping? {

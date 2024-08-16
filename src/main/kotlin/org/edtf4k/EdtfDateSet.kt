@@ -1,7 +1,7 @@
 package org.edtf4k
 
-class EdtfDateSet(dateString: String) : List<EdtfDatePair>, EdtfDateType() {
-    private val internal: List<EdtfDatePair>
+class EdtfDateSet(dateString: String) : List<EdtfDateType>, EdtfDateType {
+    private val internal: List<EdtfDateType>
     val representation: Representation
 
     init {
@@ -15,7 +15,7 @@ class EdtfDateSet(dateString: String) : List<EdtfDatePair>, EdtfDateType() {
                     Representation.ONE_OF_A_SET
                 }
 
-                internal = dateString.substring(1, dateString.length - 1).split(",").map { EdtfDatePair(it) }
+                internal = dateString.substring(1, dateString.length - 1).split(",").map { EdtfDateFactory.parse(it) }
             } else {
                 internal = ArrayList()
                 representation = Representation.INVALID
@@ -29,7 +29,7 @@ class EdtfDateSet(dateString: String) : List<EdtfDatePair>, EdtfDateType() {
     override val size: Int
         get() = internal.size
 
-    override fun get(index: Int): EdtfDatePair {
+    override fun get(index: Int): EdtfDateType {
         return internal[index]
     }
 
@@ -37,35 +37,35 @@ class EdtfDateSet(dateString: String) : List<EdtfDatePair>, EdtfDateType() {
         return internal.isEmpty()
     }
 
-    override fun iterator(): Iterator<EdtfDatePair> {
+    override fun iterator(): Iterator<EdtfDateType> {
         return internal.iterator()
     }
 
-    override fun listIterator(): ListIterator<EdtfDatePair> {
+    override fun listIterator(): ListIterator<EdtfDateType> {
         return internal.listIterator()
     }
 
-    override fun listIterator(index: Int): ListIterator<EdtfDatePair> {
+    override fun listIterator(index: Int): ListIterator<EdtfDateType> {
         return internal.listIterator(index)
     }
 
-    override fun subList(fromIndex: Int, toIndex: Int): List<EdtfDatePair> {
+    override fun subList(fromIndex: Int, toIndex: Int): List<EdtfDateType> {
         return internal.subList(fromIndex, toIndex)
     }
 
-    override fun lastIndexOf(element: EdtfDatePair): Int {
+    override fun lastIndexOf(element: EdtfDateType): Int {
         return internal.lastIndexOf(element)
     }
 
-    override fun indexOf(element: EdtfDatePair): Int {
+    override fun indexOf(element: EdtfDateType): Int {
         return internal.indexOf(element)
     }
 
-    override fun containsAll(elements: Collection<EdtfDatePair>): Boolean {
+    override fun containsAll(elements: Collection<EdtfDateType>): Boolean {
         return internal.containsAll(elements)
     }
 
-    override fun contains(element: EdtfDatePair): Boolean {
+    override fun contains(element: EdtfDateType): Boolean {
         return internal.contains(element)
     }
 

@@ -1,6 +1,6 @@
 package org.edtf4k
 
-class EdtfDatePair(dateString: String) : EdtfDateType() {
+class EdtfDatePair(dateString: String) : EdtfDateType {
     val start: EdtfDate
     val end: EdtfDate
     val isRange: Boolean

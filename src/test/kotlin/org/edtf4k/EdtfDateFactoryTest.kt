@@ -24,15 +24,18 @@ class EdtfDateFactoryTest: WithAssertions {
         @JvmStatic
         fun test(): Stream<Arguments> {
             return Stream.of(
-                Arguments.of("2001-02-03", EdtfDatePair::class, "2001-02-03"),
+                Arguments.of("2001-02-03", EdtfDate::class, "2001-02-03"),
                 Arguments.of("/2006", EdtfDatePair::class, "/2006"),
-                Arguments.of("Y170000002", EdtfDatePair::class, "Y170000002"),
-                Arguments.of("?1984", EdtfDatePair::class, "?1984"),
-                Arguments.of("199X", EdtfDatePair::class, "199X"),
-                Arguments.of("Y17E7", EdtfDatePair::class, "Y170000000"),
-                Arguments.of("?2004-06-11", EdtfDatePair::class, "?2004-06-11"),
-                Arguments.of("156X-12-25", EdtfDatePair::class, "156X-12-25"),
-                Arguments.of("1960S2", EdtfDatePair::class, "1960S2"),
+                Arguments.of("2004..2006", EdtfDatePair::class, "2004..2006"),
+                Arguments.of("Y170000002", EdtfDate::class, "Y170000002"),
+                Arguments.of("?1984", EdtfDate::class, "?1984"),
+                Arguments.of("199X", EdtfDate::class, "199X"),
+                Arguments.of("Y17E7", EdtfDate::class, "Y170000000"),
+                Arguments.of("?2004-06-11", EdtfDate::class, "?2004-06-11"),
+                Arguments.of("156X-12-25", EdtfDate::class, "156X-12-25"),
+                Arguments.of("/2006", EdtfDatePair::class, "/2006"),
+                Arguments.of("200X..20XX", EdtfDatePair::class, "200X..20XX"),
+                Arguments.of("1960S2", EdtfDate::class, "1960S2"),
                 Arguments.of("[1667,1668,1670..1672]", EdtfDateSet::class, "[1667,1668,1670..1672]"),
                 Arguments.of("{1667,1668,1670..1672}", EdtfDateSet::class, "{1667,1668,1670..1672}")
             )

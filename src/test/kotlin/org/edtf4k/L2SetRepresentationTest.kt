@@ -1,5 +1,6 @@
 package org.edtf4k
 
+import org.assertj.core.api.InstanceOfAssertFactories
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.assertj.core.api.WithAssertions
 import org.junit.jupiter.params.ParameterizedTest
@@ -17,8 +18,12 @@ class L2SetRepresentationTest : WithAssertions {
             softly.assertThat(set.representation).isEqualTo(representation)
             softly.assertThat(set).hasSize(size)
             softly.assertThat(set.toString()).isEqualTo(expectedString)
-            set.withIndex().forEach { (index, datePair) ->
-                softly.assertThat(datePair.isRange).isEqualTo(rangePositions[index])
+            set.withIndex().forEach { (index, dateType) ->
+                if (rangePositions[index]) {
+                    assertThat(dateType).isInstanceOf(EdtfDatePair::class.java).asInstanceOf(InstanceOfAssertFactories.type(EdtfDatePair::class.java)).extracting { it.isRange }.isEqualTo(true)
+                } else {
+                    assertThat(dateType).isInstanceOf(EdtfDate::class.java)
+                }
             }
         }
     }
