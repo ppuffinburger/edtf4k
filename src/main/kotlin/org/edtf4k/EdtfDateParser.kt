@@ -1,7 +1,5 @@
 package org.edtf4k
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 import kotlin.math.abs
 import kotlin.math.floor
 import kotlin.math.log10
@@ -25,23 +23,20 @@ internal class EdtfDateParser {
             return EdtfDate(EdtfDateStatus.OPEN)
         }
 
-        val matcher = PATTERN.matcher(dateString)
-        if (matcher.matches()) {
-            if (parseYear(matcher)) {
-                if (parseMonth(matcher)) {
-                    if (parseDay(matcher)) {
-                        parseTime(matcher)
+        REGEX.matchEntire(dateString)?.let {
+            if (parseYear(it)) {
+                if (parseMonth(it)) {
+                    if (parseDay(it)) {
+                        parseTime(it)
                     }
                 }
             }
             return EdtfDate(status, year, month, day, hour, minute, second, timezoneOffset)
-        } else {
-            return EdtfDate(EdtfDateStatus.INVALID)
-        }
+        } ?: return EdtfDate(EdtfDateStatus.INVALID)
     }
 
-    private fun parseYear(matcher: Matcher): Boolean {
-        val yearString = matcher.group(YEAR_NUM_PATTERN_NAME)
+    private fun parseYear(matchResult: MatchResult): Boolean {
+        val yearString = matchResult.groups[YEAR_NUM_PATTERN_NAME]?.value ?: ""
 
         year = EdtfDateComponent(yearString)
 
@@ -50,7 +45,7 @@ internal class EdtfDateParser {
             return false
         }
 
-        val yearPrecisionString = matcher.group(YEAR_PRECISION_PATTERN_NAME)
+        val yearPrecisionString = matchResult.groups[YEAR_PRECISION_PATTERN_NAME]?.value
         if (!yearPrecisionString.isNullOrBlank()) {
             val totalDigits = floor(log10(abs(year.value).toDouble()) + 1).toInt()
             val significantDigits = yearPrecisionString.toInt()
@@ -64,13 +59,13 @@ internal class EdtfDateParser {
             }
         }
 
-        year.setFlags(matcher.group(YEAR_OPEN_FLAGS_PATTERN_NAME) + matcher.group(YEAR_CLOSE_FLAGS_PATTERN_NAME))
+        year.setFlags(matchResult.groups[YEAR_OPEN_FLAGS_PATTERN_NAME]?.value + matchResult.groups[YEAR_CLOSE_FLAGS_PATTERN_NAME]?.value)
 
         return true
     }
 
-    private fun parseMonth(matcher: Matcher): Boolean {
-        val monthString = matcher.group(MONTH_NUM_PATTERN_NAME) ?: return false
+    private fun parseMonth(matchResult: MatchResult): Boolean {
+        val monthString = matchResult.groups[MONTH_NUM_PATTERN_NAME]?.value ?: return false
 
         month = EdtfDateComponent(monthString)
 
@@ -79,8 +74,8 @@ internal class EdtfDateParser {
             return false
         }
 
-        val openFlags = matcher.group(MONTH_OPEN_FLAGS_PATTERN_NAME)
-        val closeFlags = matcher.group(MONTH_CLOSE_FLAGS_PATTERN_NAME)
+        val openFlags = matchResult.groups[MONTH_OPEN_FLAGS_PATTERN_NAME]?.value ?: ""
+        val closeFlags = matchResult.groups[MONTH_CLOSE_FLAGS_PATTERN_NAME]?.value ?: ""
 
         month.setFlags(openFlags)
         month.setFlags(closeFlags)
@@ -99,8 +94,8 @@ internal class EdtfDateParser {
         return true
     }
 
-    private fun parseDay(matcher: Matcher): Boolean {
-        val dayString = matcher.group(DAY_NUM_PATTERN_NAME) ?: return false
+    private fun parseDay(matchResult: MatchResult): Boolean {
+        val dayString = matchResult.groups[DAY_NUM_PATTERN_NAME]?.value ?: return false
 
         day = EdtfDateComponent(dayString)
 
@@ -114,8 +109,8 @@ internal class EdtfDateParser {
             return false
         }
 
-        val openFlags = matcher.group(DAY_OPEN_FLAGS_PATTERN_NAME)
-        val closeFlags = matcher.group(DAY_CLOSE_FLAGS_PATTERN_NAME)
+        val openFlags = matchResult.groups[DAY_OPEN_FLAGS_PATTERN_NAME]?.value ?: ""
+        val closeFlags = matchResult.groups[DAY_CLOSE_FLAGS_PATTERN_NAME]?.value ?: ""
 
         day.setFlags(openFlags)
         day.setFlags(closeFlags)
@@ -125,8 +120,8 @@ internal class EdtfDateParser {
         return true
     }
 
-    private fun parseTime(matcher: Matcher) {
-        val hourString = matcher.group(HOUR_PATTERN_NAME)
+    private fun parseTime(matchResult: MatchResult) {
+        val hourString = matchResult.groups[HOUR_PATTERN_NAME]?.value
 
         if (hourString.isNullOrBlank()) {
             return
@@ -138,26 +133,26 @@ internal class EdtfDateParser {
             return
         }
 
-        minute = matcher.group(MINUTE_PATTERN_NAME).toInt()
+        minute = matchResult.groups[MINUTE_PATTERN_NAME]!!.value.toInt()
         if (valueOutOfRange(minute, 59)) {
             status = EdtfDateStatus.INVALID
             return
         }
 
-        second = matcher.group(SECOND_PATTERN_NAME).toInt()
+        second = matchResult.groups[SECOND_PATTERN_NAME]!!.value.toInt()
         if (valueOutOfRange(second, 59)) {
             status = EdtfDateStatus.INVALID
             return
         }
 
-        if (!matcher.group(TZ_UTC_PATTERN_NAME).isNullOrBlank()) {
+        if (!(matchResult.groups[TZ_UTC_PATTERN_NAME]?.value).isNullOrBlank()) {
             timezoneOffset = 0
         } else {
-            val tzSignString = matcher.group(TZ_SIGN_PATTERN_NAME)
+            val tzSignString = matchResult.groups[TZ_SIGN_PATTERN_NAME]?.value
             if (!tzSignString.isNullOrBlank()) {
                 val tzSign = if ((tzSignString[0] == '-')) -1 else 1
-                val tzHour = matcher.group(TZ_HOUR_PATTERN_NAME).toInt()
-                val tzMinute = matcher.group(TZ_MINUTE_PATTERN_NAME)?.toInt() ?: 0
+                val tzHour = matchResult.groups[TZ_HOUR_PATTERN_NAME]!!.value.toInt()
+                val tzMinute = matchResult.groups[TZ_MINUTE_PATTERN_NAME]?.value?.toInt() ?: 0
                 timezoneOffset = tzSign * (tzHour * 60) + tzMinute
             }
         }
@@ -212,14 +207,13 @@ internal class EdtfDateParser {
         private const val TZ_SIGN_PATTERN_NAME = "tzsign"
         private const val TZ_HOUR_PATTERN_NAME = "tzhour"
         private const val TZ_MINUTE_PATTERN_NAME = "tzminute"
-        private val PATTERN_STRING = """
+        private val REGEX = """
 			(?<$YEAR_LONG_INDICATOR_PATTERN_NAME>Y?)
 			(?>(?<$YEAR_OPEN_FLAGS_PATTERN_NAME>[~?%]{0,2})(?<$YEAR_NUM_PATTERN_NAME>[+-]?(?:\d+E\d+|[0-9X]+))(?>S(?<$YEAR_PRECISION_PATTERN_NAME>\d+))?(?<$YEAR_CLOSE_FLAGS_PATTERN_NAME>[~?%]{0,2}))
 			(?>-(?>(?<$MONTH_OPEN_FLAGS_PATTERN_NAME>[~?%]{0,2})(?<$MONTH_NUM_PATTERN_NAME>(?>[0-9X]{1,2}))(?<$MONTH_CLOSE_FLAGS_PATTERN_NAME>[~?%]{0,2}))
 			(?>-(?>(?<$DAY_OPEN_FLAGS_PATTERN_NAME>[~?%]{0,2})(?<$DAY_NUM_PATTERN_NAME>(?>[0-9X]{1,2}))(?<$DAY_CLOSE_FLAGS_PATTERN_NAME>[~?%]{0,2}))
 			(?>T(?<$HOUR_PATTERN_NAME>[0-9]{2}):?(?<$MINUTE_PATTERN_NAME>[0-9]{2}):?(?<$SECOND_PATTERN_NAME>[0-9]{2})(?>(?<$TZ_UTC_PATTERN_NAME>Z)|(?<$TZ_SIGN_PATTERN_NAME>[+-])(?<$TZ_HOUR_PATTERN_NAME>[01][0-9])(?>:(?<$TZ_MINUTE_PATTERN_NAME>[0-5][0-9]))?)?)?)?)?$
-			""".trimIndent()
-        private val PATTERN: Pattern = Pattern.compile(PATTERN_STRING, Pattern.COMMENTS)
+			""".trimIndent().toRegex(RegexOption.COMMENTS)
         private val MONTHS_WITH_30_DAYS: Set<Int> = setOf(4, 6, 9, 11)
 
         fun parse(dateString: String, hasInterval: Boolean): EdtfDate {

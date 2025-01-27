@@ -31,7 +31,7 @@ will output
 ```text
 Single - 2006
 Pair   - 2008..2009
-Set    - 2006, 2008..2009
+Set    - {2006,2008..2009}
 ```
 
 ## About EDTF

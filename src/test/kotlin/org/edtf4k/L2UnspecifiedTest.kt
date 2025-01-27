@@ -68,7 +68,11 @@ class L2UnspecifiedTest : WithAssertions {
                 Arguments.of("156X-12-25", EdtfDateStatus.NORMAL, 1560, false, "0001", 12, false, "00", 25, false, "00", "156X-12-25"),
                 Arguments.of("15XX-12-25", EdtfDateStatus.NORMAL, 1500, false, "0011", 12, false, "00", 25, false, "00", "15XX-12-25"),
                 Arguments.of("15XX-12-XX", EdtfDateStatus.NORMAL, 1500, false, "0011", 12, false, "00", 0, false, "11", "15XX-12-XX"),
-                Arguments.of("1560-XX-25", EdtfDateStatus.NORMAL, 1560, false, "0000", 0, false, "11", 25, false, "00", "1560-XX-25")
+                Arguments.of("1560-XX-25", EdtfDateStatus.NORMAL, 1560, false, "0000", 0, false, "11", 25, false, "00", "1560-XX-25"),
+                Arguments.of("XXXX-12-XX", EdtfDateStatus.NORMAL, 0, false, "1111", 12, false, "00", 0, false, "11", "XXXX-12-XX"),
+                Arguments.of("1XXX-XX", EdtfDateStatus.NORMAL, 1000, false, "0111", 0, false, "11", null, false, "00", "1XXX-XX"),
+                Arguments.of("1XXX-12", EdtfDateStatus.NORMAL, 1000, false, "0111", 12, false, "00", null, false, "00", "1XXX-12"),
+                Arguments.of("1984-1X", EdtfDateStatus.NORMAL, 1984, false, "0000", 10, false, "01", null, false, "00", "1984-1X")
             )
         }
     }
